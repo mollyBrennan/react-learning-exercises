@@ -20,7 +20,7 @@ const ICONS_BY_VARIANT = {
 
 // think handle dismiss could maybe be context because have to go down two components
 
-function Toast({ variant, children }) {
+function Toast({ id, variant, removeToast, children }) {
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
@@ -30,7 +30,7 @@ function Toast({ variant, children }) {
       </div>
       <p className={styles.content}>{children}</p>
       <button className={styles.closeButton}>
-        <X size={24} onClick={() => {}} />
+        <X size={24} onClick={() => removeToast(id)} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>
       </button>
     </div>
