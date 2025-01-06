@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import {
   AlertOctagon,
   AlertTriangle,
@@ -44,7 +44,20 @@ function ToastProvider({ children }) {
     setVariant(VARIANT_OPTIONS[0]);
   };
 
-  // might need to do something with Memo since it's an object?
+  useEffect(() => {
+    function handleKeyDown(event) {
+      if (event.code === "Escape") {
+        setToastList([]);
+      }
+    }
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   toastProvider = {
     message,
     setMessage,
