@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useCallback } from "react";
 import {
   AlertOctagon,
   AlertTriangle,
@@ -6,6 +6,7 @@ import {
   Info,
   X,
 } from "react-feather";
+import useKeyDown from "../../hooks/useKeyDown.js";
 
 const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 
@@ -44,19 +45,10 @@ function ToastProvider({ children }) {
     setVariant(VARIANT_OPTIONS[0]);
   };
 
-  useEffect(() => {
-    function handleKeyDown(event) {
-      if (event.code === "Escape") {
-        setToastList([]);
-      }
-    }
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
+  const handleEscape = useCallback(() => {
+    setToastList([]);
   }, []);
+  useKeyDown("Escape", handleEscape);
 
   toastProvider = {
     message,
