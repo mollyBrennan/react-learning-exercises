@@ -1,45 +1,28 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import Button from "../Button";
 
 import styles from "./ToastPlayground.module.css";
 
 import ToastShelf from "../ToastShelf";
-
-const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
+import { ToastProviderContext } from "../ToastProvider/ToastProvider";
 
 function ToastPlayground() {
-  const [message, setMessage] = useState("");
-  const [variant, setVariant] = useState(VARIANT_OPTIONS[0]);
-  const [toastList, setToastList] = useState([]);
+  const toast = useContext(ToastProviderContext);
+  const {
+    VARIANT_OPTIONS,
+    variant,
+    setVariant,
+    message,
+    setMessage,
+    addToast,
+    resetToastForm,
+  } = toast;
 
   const popToast = (event) => {
-    console.log("pop toast");
     event.preventDefault();
-    addToList();
-    resetForm();
-  };
-
-  const resetForm = () => {
-    setMessage("");
-    setVariant(VARIANT_OPTIONS[0]);
-  };
-
-  const addToList = () => {
-    console.log("add to list");
-    const newToast = {
-      id: crypto.randomUUID(),
-      variant,
-      message,
-    };
-    // push new element on
-    const tempList = [...toastList, newToast];
-    setToastList(tempList);
-  };
-
-  const removeFromList = (removeId) => {
-    const nextToasts = toastList.filter((toast) => toast.id != removeId);
-    setToastList(nextToasts);
+    addToast();
+    resetToastForm();
   };
 
   return (
@@ -49,10 +32,7 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf
-        toastList={toastList}
-        removeToast={removeFromList}
-      ></ToastShelf>
+      <ToastShelf />
 
       <div className={styles.controlsWrapper}>
         <div className={styles.row}>

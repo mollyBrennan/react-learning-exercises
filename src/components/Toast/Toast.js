@@ -1,26 +1,15 @@
-import React from "react";
-import {
-  AlertOctagon,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  X,
-} from "react-feather";
-
+import React, { useContext } from "react";
+import { X } from "react-feather";
 import VisuallyHidden from "../VisuallyHidden";
 
 import styles from "./Toast.module.css";
+import { ToastProviderContext } from "../ToastProvider/ToastProvider";
 
-const ICONS_BY_VARIANT = {
-  notice: Info,
-  warning: AlertTriangle,
-  success: CheckCircle,
-  error: AlertOctagon,
-};
+function Toast({ toastItem }) {
+  const toast = useContext(ToastProviderContext);
+  const { ICONS_BY_VARIANT, removeToast } = toast;
 
-// think handle dismiss could maybe be context because have to go down two components
-
-function Toast({ id, variant, removeToast, children }) {
+  const { id, message, variant } = toastItem;
   const Icon = ICONS_BY_VARIANT[variant];
 
   return (
@@ -28,7 +17,7 @@ function Toast({ id, variant, removeToast, children }) {
       <div className={styles.iconContainer}>
         <Icon size={24} />
       </div>
-      <p className={styles.content}>{children}</p>
+      <p className={styles.content}>{message}</p>
       <button className={styles.closeButton}>
         <X size={24} onClick={() => removeToast(id)} />
         <VisuallyHidden>Dismiss message</VisuallyHidden>

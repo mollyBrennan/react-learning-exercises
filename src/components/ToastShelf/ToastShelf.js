@@ -1,21 +1,19 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useContext } from "react";
 
 import Toast from "../Toast";
 import styles from "./ToastShelf.module.css";
+import { ToastProviderContext } from "../ToastProvider/ToastProvider";
 
-function ToastShelf({ toastList, removeToast }) {
+function ToastShelf() {
+  const toast = useContext(ToastProviderContext);
+  const { toastList } = toast;
+
   return (
     <ol className={styles.wrapper}>
       {toastList.map((toastItem) => {
         return (
           <li key={toastItem.id} className={styles.toastWrapper}>
-            <Toast
-              id={toastItem.id}
-              variant={toastItem.variant}
-              removeToast={removeToast}
-            >
-              {toastItem.message}
-            </Toast>
+            <Toast toastItem={toastItem}></Toast>
           </li>
         );
       })}
